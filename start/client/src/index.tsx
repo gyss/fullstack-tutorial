@@ -7,9 +7,23 @@ import Pages from './pages'
 import injectStyles from './styles'
 import {cache} from './cache'
 
+export const typeDefs = gql`
+  extend type Query {
+    isLoggedIn: Boolean!
+    cartItems: [ID!]!
+  }
+`
+
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache,
   uri: 'http://localhost:4000/graphql',
+  headers: {
+    authorization: localStorage.getItem('token') || '',
+    'client-name': 'Space Explorer [web]',
+    'client-version': '1.0.0',
+  },
+  typeDefs,
+  resolvers: {},
 })
 
 client
